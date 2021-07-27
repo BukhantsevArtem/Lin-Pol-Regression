@@ -26,3 +26,22 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 mean_absolute_error(y_test, predictions)
 mean_squared_error(y_test, predictions)
+
+train_rmse_error = []
+test_rmse_error = []
+
+for d in range(1,10):
+    poly_converter = PolynomialFeatures(degree = d, include_bias = False)
+    pol_features = poly_converter.fit_transform(X)
+    X_train, X_test, y_train, y_test = train_test_split(pol_features, y, train_size=0.75, test_size=0.25, random_state=101)
+    
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    pred_train = model.predict(X_train)
+    pred_test = model.predict(X_test)
+    
+    train_rmse = np.sqrt(mean_absolute_error(y_train, pred_train))
+    test_rmse = np.sqrt(mean_absolute_error(y_test, pred_test))
+    
+    train_rmse_error.append(train_rmse)
+    test_rmse_error.append(test_rmse)
