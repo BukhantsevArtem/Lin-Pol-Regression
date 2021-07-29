@@ -45,3 +45,18 @@ for d in range(1,10):
     
     train_rmse_error.append(train_rmse)
     test_rmse_error.append(test_rmse)
+    
+plt.figure(dpi = 200)
+plt.plot(range(1,10), train_rmse_error, label='Train')
+plt.plot(range(1,10), test_rmse_error, label='Test')
+plt.legend()
+
+
+final_poly = PolynomialFeatures(degree = 3, include_bias = False)
+final_model = LinearRegression()
+full_convert = final_poly.fit_transform(X)
+final_model.fit(full_convert, y)
+
+from joblib import dump, load
+dump(final_model, 'Final_poly_model.joblib')
+dump(final_poly, 'Converter_poly.joblib')
